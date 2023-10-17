@@ -41,8 +41,13 @@ We hope to have the output available in multiple formats (csv, rich text, etc). 
 - Collect bills from Massachusetts Legislature
     
     https://malegislature.gov/Bills/Search
+
+    The /Documents endpoint provides a list of every single publicly available document with information like BillNumber, Title, GeneralCourtNumber, etc. We will use the "BillNumber" field with the /Documents/{document_number} endpoint to get the text for all the bills
     
-    API: https://malegislature.gov/api/swagger/index.html?url=/api/swagger/v1/swagger.json#/Hearings/Hearings_GetHearings
+    API endpoint to get the BillNumbers: https://malegislature.gov/api/Documents
+    API endpoint to get the raw text: https://malegislature.gov/api/Documents/{document_number}
+
+  There are approximately 6595 bills, from the first endpoint.
     
 - Massachusetts General Law sections and subsections as category tags
     
