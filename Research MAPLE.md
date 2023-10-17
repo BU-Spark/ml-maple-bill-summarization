@@ -21,7 +21,7 @@ Before we dive into our research of LLMs we have defined a few criteria that wil
 
 Based on these criteria and reading up on the various LLMs from different sites and papers (refer to sources), we have come up with a general table which contains all the models to whom we have assigned a high, medium or low grade for each of the criteria.
 
-[https://lh7-us.googleusercontent.com/3dFnsfy5fdB-shdqnwpRB-Ol1rJ6QAbFrnUtGZ5J4hKMth8p4UlOvMui9Bo5qw5h-NEempkDnTNr3ma8xex4vCB2NzhzgfAYKo49h8pgK9BbcBttGFmQg12JPi6299D4BPXweCmNxiTjlMPjnzQgo1w](https://lh7-us.googleusercontent.com/3dFnsfy5fdB-shdqnwpRB-Ol1rJ6QAbFrnUtGZ5J4hKMth8p4UlOvMui9Bo5qw5h-NEempkDnTNr3ma8xex4vCB2NzhzgfAYKo49h8pgK9BbcBttGFmQg12JPi6299D4BPXweCmNxiTjlMPjnzQgo1w)
+![alt text](https://lh7-us.googleusercontent.com/3dFnsfy5fdB-shdqnwpRB-Ol1rJ6QAbFrnUtGZ5J4hKMth8p4UlOvMui9Bo5qw5h-NEempkDnTNr3ma8xex4vCB2NzhzgfAYKo49h8pgK9BbcBttGFmQg12JPi6299D4BPXweCmNxiTjlMPjnzQgo1w)
 
 **Figure 1** : Comparison of LLMs and methods based on key evaluation metrics
 
@@ -33,11 +33,11 @@ Overall, LLAMA, T5, and Customer Training with Transformation models appear to b
 
 1. **Preliminary Testing**
 
-[https://lh7-us.googleusercontent.com/se1QGXdHkGWoeaHh9Rpb9ow5zMnrWx4a83BVUXXGcStAfK4ni83xDTmnkuvk22E8CHJnO87aEYsSXScpc2ExcErr9xcQqPlH592iLX4vsKSb9g1bSM2h646F2w-UdvXEWMo7Wo0jR6DRgipbZvb7Q6U](https://lh7-us.googleusercontent.com/se1QGXdHkGWoeaHh9Rpb9ow5zMnrWx4a83BVUXXGcStAfK4ni83xDTmnkuvk22E8CHJnO87aEYsSXScpc2ExcErr9xcQqPlH592iLX4vsKSb9g1bSM2h646F2w-UdvXEWMo7Wo0jR6DRgipbZvb7Q6U)
+![alt text](https://lh7-us.googleusercontent.com/se1QGXdHkGWoeaHh9Rpb9ow5zMnrWx4a83BVUXXGcStAfK4ni83xDTmnkuvk22E8CHJnO87aEYsSXScpc2ExcErr9xcQqPlH592iLX4vsKSb9g1bSM2h646F2w-UdvXEWMo7Wo0jR6DRgipbZvb7Q6U)
 
 **Figure 2:** Rough Sketch of Development Process
 
-[https://lh7-us.googleusercontent.com/_w1LP_RRoSIny-A-yS-d8C4RMyAZgDnr_TS1ny_a22vI3Giml-Rhm1kOaHA_ZxNjjUavWom3T9NJFMR6ORlfX_bop86Q6BN-xq_gUvxBnV47eX_rXuRxoU9kIuVfFw-I5Ru0sHW9wyUgEOLVRHw7ALg](https://lh7-us.googleusercontent.com/_w1LP_RRoSIny-A-yS-d8C4RMyAZgDnr_TS1ny_a22vI3Giml-Rhm1kOaHA_ZxNjjUavWom3T9NJFMR6ORlfX_bop86Q6BN-xq_gUvxBnV47eX_rXuRxoU9kIuVfFw-I5Ru0sHW9wyUgEOLVRHw7ALg)
+![alt text](https://lh7-us.googleusercontent.com/_w1LP_RRoSIny-A-yS-d8C4RMyAZgDnr_TS1ny_a22vI3Giml-Rhm1kOaHA_ZxNjjUavWom3T9NJFMR6ORlfX_bop86Q6BN-xq_gUvxBnV47eX_rXuRxoU9kIuVfFw-I5Ru0sHW9wyUgEOLVRHw7ALg)
 
 **Figure 3** : Scraping, Summarizing and tagging bills with a sample set of 10 bills
 
@@ -92,6 +92,6 @@ Based off of our current findings and knowledge, we have one major takeaway whic
 
 GPT 3.5 Web app Demo screenshot
 
-[https://lh7-us.googleusercontent.com/VSlaYRa6BNNDIczT_O54r43UPZYhbvMpA0y_jcaqnHKd22HSCpxxfmJKntk3rliGoTZgZqfNZVnn1gMBuQH1ob1OC3k4l_ZcY5ZS3lCmVxTkX7CpO3Jhpc0jnGkaZeCOaGSevud1zaSjKfisAKoNxVk](https://lh7-us.googleusercontent.com/VSlaYRa6BNNDIczT_O54r43UPZYhbvMpA0y_jcaqnHKd22HSCpxxfmJKntk3rliGoTZgZqfNZVnn1gMBuQH1ob1OC3k4l_ZcY5ZS3lCmVxTkX7CpO3Jhpc0jnGkaZeCOaGSevud1zaSjKfisAKoNxVk)
+![alt text](https://lh7-us.googleusercontent.com/VSlaYRa6BNNDIczT_O54r43UPZYhbvMpA0y_jcaqnHKd22HSCpxxfmJKntk3rliGoTZgZqfNZVnn1gMBuQH1ob1OC3k4l_ZcY5ZS3lCmVxTkX7CpO3Jhpc0jnGkaZeCOaGSevud1zaSjKfisAKoNxVk)
 
-[https://lh7-us.googleusercontent.com/Ps0_uWz9BCgyWSRtfZTBJWyATV5fUcRAJaANSqWDQfKNWib3sI6zKqMZ21zkU-YJbPFIQOJrYqQptJAljuEfHpGoJBxoiJzTNkmmqha-z-3Y6YJIA2iwZXfnQfDSCFHpw-t1fcgCkhWYV_OeVchhHrU](https://lh7-us.googleusercontent.com/Ps0_uWz9BCgyWSRtfZTBJWyATV5fUcRAJaANSqWDQfKNWib3sI6zKqMZ21zkU-YJbPFIQOJrYqQptJAljuEfHpGoJBxoiJzTNkmmqha-z-3Y6YJIA2iwZXfnQfDSCFHpw-t1fcgCkhWYV_OeVchhHrU)
+![alt text](https://lh7-us.googleusercontent.com/Ps0_uWz9BCgyWSRtfZTBJWyATV5fUcRAJaANSqWDQfKNWib3sI6zKqMZ21zkU-YJbPFIQOJrYqQptJAljuEfHpGoJBxoiJzTNkmmqha-z-3Y6YJIA2iwZXfnQfDSCFHpw-t1fcgCkhWYV_OeVchhHrU)
