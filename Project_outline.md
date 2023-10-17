@@ -10,7 +10,8 @@
 
 *To assist in outlining the steps needed to achieve our final goal, outline the AI-less process that we are trying to automate with Machine Learning. Provide as much detail as possible.*
 
-We are trying to automate the process of summarizing and tagging Massachusetts bills. For example, there are approximately thousands of bills here: [https://malegislature.gov/Laws/GeneralLaws/PartI/TitleI/Chapter1/Section1](https://malegislature.gov/Bills/Search), and our goal will be building a system that summarizes all of these bills into more digestible pieces of texts, as well as tagging each bill so that we can separate them into different categories.
+We are trying to automate the process of summarizing and tagging Massachusetts bills. For example, there are approximately thousands of bills here: [Links](https://malegislature.gov/Bills/Search)\
+Our goal will be building a system that summarizes all of these bills into more digestible pieces of texts, as well as tagging each bill so that we can separate them into different categories.
 
 ### B. Problem Statement:
 
