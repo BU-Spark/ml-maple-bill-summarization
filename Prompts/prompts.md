@@ -8,3 +8,8 @@ Also, I want you to define the main topic for this bill For example, Topic: Bill
 hashtag \
 {context} \
 hashtag """
+
+Prompt2 = 
+""""I want a summarizer that reads and summarizes legal bills and legislation. I want the summary to not be vague and include the general amendments, area the legislation is affecting, the purpose, the town/city it is affecting, etc.  Based on the bill text {context} given please create a concise and easy-to-understand summary with the relevant key points.
+"""
+
