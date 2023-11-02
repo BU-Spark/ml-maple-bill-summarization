@@ -5,6 +5,6 @@ Summarize the text so {level} can understand Your summary should be no more than
 Do not include your opinions or interpretations and do not make up any false information. 
 Also, I want you to define the main topic for this bill For example, Topic: Bills about unjustice
 
-####
-{context}
-#### """
+hashtag \
+{context} \
+hashtag """
