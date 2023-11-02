@@ -20,5 +20,5 @@ Prompt3 =
 Include the general amendments, area the legislation is affecting, the purpose, the town and city it is affecting. 
 
 s #### \
-{context}
+{context} \
 s ####
