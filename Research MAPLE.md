@@ -29,7 +29,7 @@ Above we have provided a succinct table generalizing the use-cases for each LLM 
 
 In addition to that, comprehensibility is a close second however not as important because we can hopefully tune each model to summarize in a more simple manner. Due to the fact that cost is also another consideration, we have given High scores to BERT, T5, and GPT-3.5. However, we have not tested how far tuning some models like LLAMA and customized transformers can go yet. Regarding the Customizability criteria, LLAMA, T5, and Customer Training with Transformation models seem to offer high customizability as they can be fine-tuned for specific tasks and domains. Moreover, GPT-3.5, LLAMA, and T5 are moderately cost-efficient, considering their performance while XLNet, BERT, and Customer Training with Transformation might be costlier due to resource-intensive fine-tuning and training processes.
 
-Overall, LLAMA, T5, and Customer Training with Transformation models appear to be the most suitable choices for simplifying Massachusetts bills since they excel in comprehensibility, content accuracy, customizability, and overall performance. Hence, we will put more emphasis on these models while conducting performance tests and cost analysis.
+Overall, LLAMA, T5, and Customer Training with Transformer models appear to be the most suitable choices for simplifying Massachusetts bills since they excel in comprehensibility, content accuracy, customizability, and overall performance. Hence, we will put more emphasis on these models while conducting performance tests and cost analysis.
 
 1. **Preliminary Testing**
 
