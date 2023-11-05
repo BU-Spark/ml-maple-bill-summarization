@@ -22,3 +22,23 @@ Include the general amendments, area the legislation is affecting, the purpose, 
 s #### \
 {context} \
 s #### """
+
+## Prompt 4
+template = """"Your task is to generate a concise summary of a bill
+from massachusetts legislature. Make sure to capture the main idea of the bill.
+
+Summarize the bill below, delimited by triple backticks, and summarize in a way so {level} can understand.
+
+These are the informations
+bill: ```{context}``` 
+tags: #### {schema} ####
+
+provide your summary in a consistent style
+Summary: your summary
+
+category: choose one category from the list of categories, delimited by ####, that is relevant to the summary
+
+next, after you select a category, identify tags that are relevant to your summary.
+Do not make up any false information.
+
+"""
