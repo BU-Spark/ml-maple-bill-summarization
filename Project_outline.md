@@ -59,6 +59,9 @@ We hope to have the output available in multiple formats (csv, rich text, etc). 
 - Additional information on this task (including examples)
     
     https://github.com/codeforboston/maple/issues/843
+
+- API:
+  https://malegislature.gov/api/swagger/index.html?url=/api/swagger/v1/swagger.json#/
     
 
 ### References
