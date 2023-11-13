@@ -21,7 +21,7 @@ https://learn.deeplearning.ai/
 https://blog.langchain.dev/espilla-x-langchain-retrieval-augmented-generation-rag-in-llm-powered-question-answering-pipelines/  
 
 ## Team Members
-Vy Nguyen - Email: nptv1207@bu.edu | Github: vynpt  
-Andy Yang - Email: ayang903@bu.edu | Github: ayang903   
-Gauri Bhandarwar - Email: gaurib3@bu.edu | Github: gbhandarwar    
-Weining Mai - Email: weimai@bu.edu | Github: weibb123
+Vy Nguyen - Email: nptv1207@bu.edu 
+Andy Yang - Email: ayang903@bu.edu 
+Gauri Bhandarwar - Email: gaurib3@bu.edu  
+Weining Mai - Email: weimai@bu.edu 
