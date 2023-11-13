@@ -42,3 +42,5 @@ next, after you select a category, identify tags that are relevant to your summa
 Do not make up any false information.
 
 """
+
+A complete list of prompts will be available in the appendix section after the evaluation phase.
