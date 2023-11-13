@@ -21,7 +21,7 @@ prompt = PromptTemplate(
 )
 
 # load the dataset
-df = pd.read_csv("all_bills.csv")
+df = pd.read_csv("demoapp/all_bills.csv")
 
 def find_bills(bill_title):
     """input:
@@ -68,6 +68,7 @@ def generate_response(text, title):
 
     return response
 
+
 answer_container = st.container()
 
 with answer_container:
@@ -85,5 +86,30 @@ with answer_container:
         with col2:
             st.subheader("Generated Text")
             st.write(response)
-
+            st.download_button(
+                        label="Download Text",
+                        data=pd.read_csv("demoapp/generated_bills.csv").to_csv(index=False).encode('utf-8'),
+                        file_name='Bills_Summarization.csv',
+                        mime='text/csv',
+            )
+ 
+ # Function to update or append to CSV
+def update_csv(title, summarized_bill, csv_file_path):
+    try:
+        df = pd.read_csv(csv_file_path)
+    except FileNotFoundError:
+        # If the file does not exist, create a new DataFrame
+        df = pd.DataFrame(columns=["Original Bills", "Summarized Bills"])
     
+    mask = df["Original Bills"] == title
+    if mask.any():
+        df.loc[mask, "Summarized Bills"] = summarized_bill
+    else:
+        new_bill = pd.DataFrame([[title, summarized_bill]], columns=["Original Bills", "Summarized Bills"])
+        df = pd.concat([df, new_bill], ignore_index=True)
+    
+    df.to_csv(csv_file_path, index=False)
+    return df
+
+csv_file_path = "demoapp/generated_bills.csv"
+update_csv(bill_title, generate_response(bill_content, bill_title), csv_file_path)
