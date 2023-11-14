@@ -11,7 +11,7 @@ This repository contains a pipeline from taking bills from Massachusetts legisla
   ```DemoApp_Guideline.md```: provide instruction to run the app. For now we are displaying 3 bills - a short bill, a medium bill and a longer bill.
 * [Prompts Engineering](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Prompts%20Engineering): ```prompts.md``` stores all prompts that we tested.  
 * [Tagging](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Tagging):  
-* Evaluation:  
+* Evaluation: In this section, we will be further evaluating the quality of the summaries generated against the actual bills via methods such as Jaccard Score, NER, and human evaluation with the help of the client.
 * Deployment: 
 
 ## Resources and Citation
