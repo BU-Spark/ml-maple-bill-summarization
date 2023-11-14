@@ -5,10 +5,13 @@ from langchain.chains import LLMChain, create_tagging_chain, create_tagging_chai
 from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.callbacks import get_openai_callback
+from sidebar import *
 
 
 st.set_page_config(page_title="Summarize and Tagging MA Bills")
 st.title('Summarize Bills')
+
+sbar()
 
 template = """"You are a summarizer model that summarizes legal bills and legislation and talks about the bills purpose and any amendments. 
 The summaries must be easy to understand and accurate based on the provided bill. I want you to summarize the legal bill and legislation. 
@@ -21,7 +24,7 @@ prompt = PromptTemplate(
 )
 
 # load the dataset
-df = pd.read_csv("demoapp/all_bills.csv")
+df = pd.read_csv("all_bills.csv")
 
 def find_bills(bill_title):
     """input:
@@ -46,17 +49,24 @@ option = st.selectbox(
     'Select a Bill',
     ('An Act establishing a sick leave bank for Christopher Trigilio, an employee of the trial court',
      'An Act authorizing the State Board of Retirement to grant creditable service to Paul Lemelin',
-     'An Act a parcel of land in Winchester',
+     'An Act providing living organ donor protections',
      )
 )
 
 bill_content, bill_title = find_bills(option)
 
 def generate_response(text, title):
+    try:
+        API_KEY = st.session_state['OPENAI_API_KEY']
+    except Exception as e:
+        response = st.error("Invalid [OpenAI API key](https://beta.openai.com/account/api-keys) or not found")
+        return response
+
+  
     # Instantiate LLM model
     with get_openai_callback() as cb:
         llm = LLMChain(
-            llm = ChatOpenAI(openai_api_key='',
+            llm = ChatOpenAI(openai_api_key=API_KEY,
                      temperature=0.01, model="gpt-4"), prompt=prompt)
         
         response = llm.predict(context=text, title=title)
@@ -66,8 +76,7 @@ def generate_response(text, title):
         st.write(f"Completion Tokens: {cb.completion_tokens}")
         st.write(f"Total Cost (USD): ${cb.total_cost}")
 
-    return response
-
+        return response
 
 answer_container = st.container()
 
@@ -76,6 +85,8 @@ with answer_container:
     submit_button = st.button(label='Summarize')
 
     if submit_button:
+        
+        # generate response
         response = generate_response(bill_content, bill_title)
 
         with col1:
@@ -85,31 +96,9 @@ with answer_container:
         
         with col2:
             st.subheader("Generated Text")
-            st.write(response)
-            st.download_button(
-                        label="Download Text",
-                        data=pd.read_csv("demoapp/generated_bills.csv").to_csv(index=False).encode('utf-8'),
-                        file_name='Bills_Summarization.csv',
-                        mime='text/csv',
-            )
- 
- # Function to update or append to CSV
-def update_csv(title, summarized_bill, csv_file_path):
-    try:
-        df = pd.read_csv(csv_file_path)
-    except FileNotFoundError:
-        # If the file does not exist, create a new DataFrame
-        df = pd.DataFrame(columns=["Original Bills", "Summarized Bills"])
-    
-    mask = df["Original Bills"] == title
-    if mask.any():
-        df.loc[mask, "Summarized Bills"] = summarized_bill
-    else:
-        new_bill = pd.DataFrame([[title, summarized_bill]], columns=["Original Bills", "Summarized Bills"])
-        df = pd.concat([df, new_bill], ignore_index=True)
-    
-    df.to_csv(csv_file_path, index=False)
-    return df
+            try:
+                st.write(response)
+            except Exception as e:
+                st.error("no response")
 
-csv_file_path = "demoapp/generated_bills.csv"
-update_csv(bill_title, generate_response(bill_content, bill_title), csv_file_path)
+    
