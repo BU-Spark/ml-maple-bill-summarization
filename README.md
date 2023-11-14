@@ -1,4 +1,4 @@
-# ML - MAPLE Bill Summarization  
+# MAPLE Bill Summarization  
 In this project, we generate summaries and category tags for of Massachusetts bills for [MAPLE Platform](https://www.mapletestimony.org/). The goal is to simplify the legal language and content to make it comprehensible for a broader audience (9th-grade comprehension level) by exploring different ML and LLM services.  
 
 This repository contains a pipeline from taking bills from Massachusetts legislature, generating summaries and category tags leveraging different the Massachusetts General Law sections, creating a dashboard to display and save the generated texts, to deploying and integrating into MAPLE platform.
