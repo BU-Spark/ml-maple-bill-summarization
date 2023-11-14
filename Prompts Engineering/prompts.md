@@ -16,7 +16,7 @@ Prompt2 =
 
 ## Prompt 3
 Prompt3 = 
-"""You are an experience attorney in Massachusetts. Write a concise summary of the bill separated by #### so {level} can understand. Do not make up false informations.
+"""You are an experienced attorney in Massachusetts. Write a concise summary of the bill separated by #### so {level} can understand. Do not make up false information.
 Include the general amendments, area the legislation is affecting, the purpose, the town and city it is affecting. 
 
 s #### \
