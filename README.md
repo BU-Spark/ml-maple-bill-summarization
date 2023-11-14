@@ -8,7 +8,7 @@ This repository contains a pipeline from taking bills from Massachusetts legisla
 * [EDA](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/EDA): the notebook ```eda.ipynb``` includes our work from scraping data that takes bills from MAPLE Swagger API, creating a dataframe to clean and process data, making visualizations to analyze data and explore characteristics of the dataset.  
 * [demoapp](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/demoapp):   
   ```app.py```: contains the codes of the LLM service we used and dashboard we made using Streamlit.
-  ```DemoApp_Guideline.md```: provide instruction to run the app. For now we are displaying 3 bills - a short bill, a medium bil and a longer bill.
+  ```DemoApp_Guideline.md```: provide instruction to run the app. For now we are displaying 3 bills - a short bill, a medium bilL and a longer bill.
 * [Prompts Engineering](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Prompts%20Engineering): ```prompts.md``` stores all prompts that we tested.  
 * [Tagging](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Tagging):  
 * Evaluation:  
