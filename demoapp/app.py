@@ -107,7 +107,6 @@ with answer_container:
         
         # generate response
         response = generate_response(bill_content, bill_title)
-        update_csv(bill_title, response, csv_file_path)
 
         with col1:
             st.subheader("Original Bill")
@@ -116,18 +115,16 @@ with answer_container:
         
         with col2:
             st.subheader("Generated Text")
-            if response:
+            try:
+                update_csv(bill_title, response, csv_file_path)
                 st.write(response)
                 st.download_button(
                             label="Download Text",
                             data=pd.read_csv("demoapp/generated_bills.csv").to_csv(index=False).encode('utf-8'),
                             file_name='Bills_Summarization.csv',
                             mime='text/csv',)
-            else:
+            except Exception as e:
                 st.error("no response")
                 
-                # try
-                # except Exception as e:
-                #     st.error("no response")
 
     
