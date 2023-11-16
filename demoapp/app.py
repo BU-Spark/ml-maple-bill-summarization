@@ -5,10 +5,11 @@ from langchain.chains import LLMChain, create_tagging_chain, create_tagging_chai
 from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.callbacks import get_openai_callback
+# from sklearn.metrics import jaccard_score
 from sidebar import *
 
 
-st.set_page_config(page_title="Summarize and Tagging MA Bills")
+st.set_page_config(page_title="Summarize and Tagging MA Bills", layout='wide')
 st.title('Summarize Bills')
 
 sbar()
@@ -62,7 +63,6 @@ def generate_response(text, title):
         response = st.error("Invalid [OpenAI API key](https://beta.openai.com/account/api-keys) or not found")
         return response
 
-  
     # Instantiate LLM model
     with get_openai_callback() as cb:
         llm = LLMChain(
@@ -71,12 +71,16 @@ def generate_response(text, title):
         
         response = llm.predict(context=text, title=title)
         
-        st.write(f"Total Tokens: {cb.total_tokens}")
-        st.write(f"Prompt Tokens: {cb.prompt_tokens}")
-        st.write(f"Completion Tokens: {cb.completion_tokens}")
-        st.write(f"Total Cost (USD): ${cb.total_cost}")
+        # jaccard_similarity = jaccard_score(text, response, average='macro')
+        # st.write(f"Jaccard Score: {jaccard_similarity}")
+        
+        # st.write(f"Total Tokens: {cb.total_tokens}")
+        # st.write(f"Prompt Tokens: {cb.prompt_tokens}")
+        # st.write(f"Completion Tokens: {cb.completion_tokens}")
+        # st.write(f"Total Cost (USD): ${cb.total_cost}")
+        
 
-        return response
+        return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
     
 # Function to update or append to CSV
 def update_csv(title, summarized_bill, csv_file_path):
@@ -100,14 +104,15 @@ csv_file_path = "demoapp/generated_bills.csv"
 
 answer_container = st.container()
 with answer_container:
-    col1, col2 = st.columns(2, gap='medium')
     submit_button = st.button(label='Summarize')
+    # col1, col2, col3 = st.columns(3, gap='medium')
+    col1, col2, col3 = st.columns([1.5, 1.5, 1])
 
     if submit_button:
         
         # generate response
-        response = generate_response(bill_content, bill_title)
-
+        response, total_tokens, prompt_tokens, completion_tokens, total_cost = generate_response(bill_content, bill_title)
+        
         with col1:
             st.subheader("Original Bill")
             st.write(bill_title)
@@ -123,8 +128,16 @@ with answer_container:
                             data=pd.read_csv("demoapp/generated_bills.csv").to_csv(index=False).encode('utf-8'),
                             file_name='Bills_Summarization.csv',
                             mime='text/csv',)
+        
             except Exception as e:
                 st.error("no response")
+        
+        with col3:
+            st.subheader("Evaluation Metrics")
+            st.write(f"Total Tokens: {total_tokens}")
+            st.write(f"Prompt Tokens: {prompt_tokens}")
+            st.write(f"Completion Tokens: {completion_tokens}")
+            st.write(f"Total Cost (USD): ${total_cost}")
                 
 
     
