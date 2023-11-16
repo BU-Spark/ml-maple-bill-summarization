@@ -70,18 +70,23 @@ def generate_response(text, title):
                      temperature=0.01, model="gpt-4"), prompt=prompt)
         
         response = llm.predict(context=text, title=title)
-        
-        # jaccard_similarity = jaccard_score(text, response, average='macro')
-        # st.write(f"Jaccard Score: {jaccard_similarity}")
-        
-        # st.write(f"Total Tokens: {cb.total_tokens}")
-        # st.write(f"Prompt Tokens: {cb.prompt_tokens}")
-        # st.write(f"Completion Tokens: {cb.completion_tokens}")
-        # st.write(f"Total Cost (USD): ${cb.total_cost}")
-        
-
         return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
     
+# Function for Jaccard Score to handle matrix potentially
+# def calculate_jaccard_similarity(text1, text2):
+#     # Tokenize the text into sets of words or tokens
+#     set1 = set(text1.split())
+#     set2 = set(text2.split())
+    
+#     # Convert sets to lists to use with sklearn's jaccard_score
+#     # list1 = list(set1)
+#     # list2 = list(set2)
+    
+#     # Calculates the Jaccard similarity score
+#     jaccard_similarity = jaccard_score(set1, set2)
+#     return jaccard_similarity
+
+
 # Function to update or append to CSV
 def update_csv(title, summarized_bill, csv_file_path):
     try:
@@ -134,6 +139,7 @@ with answer_container:
         
         with col3:
             st.subheader("Evaluation Metrics")
+            # st.write(f"Jaccard Score: {calculate_jaccard_similarity(bill_content, response)}")
             st.write(f"Total Tokens: {total_tokens}")
             st.write(f"Prompt Tokens: {prompt_tokens}")
             st.write(f"Completion Tokens: {completion_tokens}")
