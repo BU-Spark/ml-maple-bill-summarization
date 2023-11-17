@@ -7,6 +7,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.callbacks import get_openai_callback
 # from sklearn.metrics import jaccard_score
 from sidebar import *
+from tagging import *
 
 
 st.set_page_config(page_title="Summarize and Tagging MA Bills", layout='wide')
@@ -19,10 +20,6 @@ The summaries must be easy to understand and accurate based on the provided bill
 Use the title {title} to guide your summary. Summarize the bill that reads as follows:\n{context}\n\nSummary: An Act [bill title]. This bill [key information].
 """
 
-prompt = PromptTemplate(
-    input_variables=["context", "title"],
-    template=template
-)
 
 # load the dataset
 df = pd.read_csv("demoapp/all_bills.csv")
@@ -56,17 +53,39 @@ option = st.selectbox(
 
 bill_content, bill_title = find_bills(option)
 
+def generate_categories(text):
+    """
+    generate tags and categories
+    parameters:
+        text: (string)
+    """
+    try:
+        API_KEY = st.session_state["OPENAI_API_KEY"]
+    except Exception as e:
+         return st.error("Invalid [OpenAI API key](https://beta.openai.com/account/api-keys) or not found")
+    
+    tagprompt = PromptTemplate(template=tagging_prompt, input_variables=["context", "category", "tags"])
+
+    with get_openai_callback() as cb:
+        llm = LLMChain(
+            llm = ChatOpenAI(openai_api_key=API_KEY, temperature=0.01, model='gpt-3.5-turbo'), prompt=tagprompt)
+        
+        response = llm.predict(context=text, category=category, tags=tagging) # grab from tagging.py
+        return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
+
 def generate_response(text, title):
     try:
         API_KEY = st.session_state['OPENAI_API_KEY']
     except Exception as e:
         return st.error("Invalid [OpenAI API key](https://beta.openai.com/account/api-keys) or not found")
+    
+    prompt = PromptTemplate(input_variables=["context", "title"], template=template)
 
     # Instantiate LLM model
     with get_openai_callback() as cb:
         llm = LLMChain(
             llm = ChatOpenAI(openai_api_key=API_KEY,
-                     temperature=0.01, model="gpt-4"), prompt=prompt)
+                     temperature=0.01, model="gpt-3.5-turbo"), prompt=prompt)
         
         response = llm.predict(context=text, title=title)
         return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
@@ -98,35 +117,35 @@ with answer_container:
     col1, col2, col3 = st.columns([1.5, 1.5, 1])
 
     if submit_button:
-        
-        try:
-            response, total_tokens, prompt_tokens, completion_tokens, total_cost = generate_response(bill_content, bill_title)
-            with col1:
-                st.subheader("Original Bill")
-                st.write(bill_title)
-                st.write(bill_content)
-            with col2:
-                st.subheader("Generated Text")
-                try:
+        with st.spinner("Working hard..."):
+            try:
+                response, total_tokens, prompt_tokens, completion_tokens, total_cost = generate_response(bill_content, bill_title)
+                tag_response, tag_tokens, tag_prompt, tag_complete, tag_cost = generate_categories(bill_content)
+           
+                with col1:
+                    st.subheader("Original Bill")
+                    st.write(bill_title)
+                    st.write(bill_content)
+                with col2:
+                    st.subheader("Generated Text")
+                    st.write(response)
+                    st.write(tag_response)
                     update_csv(bill_title, response, csv_file_path)
                     st.download_button(
                             label="Download Text",
                             data=pd.read_csv("demoapp/generated_bills.csv").to_csv(index=False).encode('utf-8'),
                             file_name='Bills_Summarization.csv',
                             mime='text/csv',)
-        
-                except Exception as e:
-                    st.error("no response")
 
-            with col3:
-                st.subheader("Evaluation Metrics")
-                st.write(f"Total Tokens: {total_tokens}")
-                st.write(f"Prompt Tokens: {prompt_tokens}")
-                st.write(f"Completion Tokens: {completion_tokens}")
-                st.write(f"Total Cost (USD): ${total_cost}")
+                with col3:
+                    st.subheader("Evaluation Metrics")
+                    st.write(f"Total Tokens: {tag_tokens+total_tokens}")
+                    st.write(f"Prompt Tokens: {tag_prompt+prompt_tokens}")
+                    st.write(f"Completion Tokens: {tag_complete+completion_tokens}")
+                    st.write(f"Total Cost (USD): ${total_cost+tag_cost}")
 
-        except Exception as e:
-            st.write("no repsonse")
+            except Exception as e:
+                st.write("no repsonse, is your API Key valid?")
         
         
                 
