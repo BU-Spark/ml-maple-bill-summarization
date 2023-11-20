@@ -5,7 +5,9 @@ from langchain.chains import LLMChain, create_tagging_chain, create_tagging_chai
 from langchain.llms import OpenAI
 from langchain.chat_models import ChatOpenAI
 from langchain.callbacks import get_openai_callback
-# from sklearn.metrics import jaccard_score
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+from rouge_score import rouge_scorer
 from sidebar import *
 from tagging import *
 
@@ -39,7 +41,7 @@ def find_bills(bill_title):
 
     except Exception as e:
         content = "blank"
-        st.error("cannot find such bill from the source")
+        st.error("Cannot find such bill from the source")
     
     return content, bill_title
 
@@ -119,7 +121,7 @@ with answer_container:
     if submit_button:
         with st.spinner("Working hard..."):
             try:
-                response, total_tokens, prompt_tokens, completion_tokens, total_cost = generate_response(bill_content, bill_title)
+                response, response_tokens, prompt_tokens, completion_tokens, response_cost = generate_response(bill_content, bill_title)
                 tag_response, tag_tokens, tag_prompt, tag_complete, tag_cost = generate_categories(bill_content)
            
                 with col1:
@@ -129,7 +131,9 @@ with answer_container:
                 with col2:
                     st.subheader("Generated Text")
                     st.write(response)
+                    st.write("###") # add a line break
                     st.write(tag_response)
+                    
                     update_csv(bill_title, response, csv_file_path)
                     st.download_button(
                             label="Download Text",
@@ -139,13 +143,27 @@ with answer_container:
 
                 with col3:
                     st.subheader("Evaluation Metrics")
-                    st.write(f"Total Tokens: {tag_tokens+total_tokens}")
+                    # rouge score addition
+                    scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
+                    rouge_scores = scorer.score(bill_content, response)
+                    st.write(f"ROUGE-1 Score: {rouge_scores['rouge1'].fmeasure:.2f}")
+                    st.write(f"ROUGE-2 Score: {rouge_scores['rouge2'].fmeasure:.2f}")
+                    st.write(f"ROUGE-L Score: {rouge_scores['rougeL'].fmeasure:.2f}")
+                    
+                    # calc cosine similarity
+                    vectorizer = TfidfVectorizer()
+                    tfidf_matrix = vectorizer.fit_transform([bill_content, response])
+                    cosine_sim = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])
+                    st.write(f"Cosine Similarity Score: {cosine_sim[0][0]:.2f}")
+                    st.write("###") # add a line break
+                    
+                    st.write(f"Total Tokens: {tag_tokens+response_tokens}")
                     st.write(f"Prompt Tokens: {tag_prompt+prompt_tokens}")
                     st.write(f"Completion Tokens: {tag_complete+completion_tokens}")
-                    st.write(f"Total Cost (USD): ${total_cost+tag_cost}")
+                    st.write(f"Total Cost (USD): ${response_cost+tag_cost}")
 
             except Exception as e:
-                st.write("no repsonse, is your API Key valid?")
+                st.write("No repsonse, is your API Key valid?")
         
         
                 
