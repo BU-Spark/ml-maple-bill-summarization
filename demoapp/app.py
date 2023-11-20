@@ -26,34 +26,53 @@ Use the title {title} to guide your summary. Summarize the bill that reads as fo
 # load the dataset
 df = pd.read_csv("demoapp/all_bills.csv")
 
-def find_bills(bill_title):
+def find_bills(bill_number, bill_title):
     """input:
-    args: bill_title: (str), Use the title of the bill to find titles and content
+    args: bill_number: (str), Use the number of the bill to find its title and content
     """
-    bill = df[df['Title'] == bill_title]['DocumentText']
+    bill = df[df['BillNumber'] == bill_number]['DocumentText']
 
     try:
          # Locate the index of the bill
         idx = bill.index.tolist()[0]
-        # Locate the content of bill based on idx
+        # Locate the content and bill title of bill based on idx
         content = df['DocumentText'].iloc[idx]
-        bill_title = df['Title'].iloc[idx]
+        #bill_title = df['Title'].iloc[idx]
+        bill_number = df['BillNumber'].iloc[idx]
 
     except Exception as e:
         content = "blank"
         st.error("Cannot find such bill from the source")
     
-    return content, bill_title
+    return content, bill_title, bill_number
 
+bills_to_select = {
+    '#H3121': 'An Act relative to the open meeting law',
+    '#S2064': 'An Act extending the public records law to the Governor and the Legislature',
+    '#H711': 'An Act providing a local option for ranked choice voting in municipal elections',
+    '#S1979': 'An Act establishing a jail and prison construction moratorium',
+    '#H489': 'An Act providing affordable and accessible high-quality early education and care to promote child development and well-being and support the economy in the Commonwealth',
+    '#S2014': 'An Act relative to collective bargaining rights for legislative employees',
+    '#S301': 'An Act providing affordable and accessible high quality early education and care to promote child development and well-being and support the economy in the Commonwealth',
+    '#H3069': 'An Act relative to collective bargaining rights for legislative employees',
+    '#S433': 'An Act providing a local option for ranked choice voting in municipal elections',
+    '#H400': 'An Act relative to vehicle recalls',
+    '#H538': 'An Act to Improve access, opportunity, and capacity in Massachusetts vocational-technical education',
+    '#S257': 'An Act to end discriminatory outcomes in vocational school admissions'
+}
+
+# Displaying the selectbox
+selectbox_options = [f"{number}: {title}" for number, title in bills_to_select.items()]
 option = st.selectbox(
     'Select a Bill',
-    ('An Act establishing a sick leave bank for Christopher Trigilio, an employee of the trial court',
-     'An Act authorizing the State Board of Retirement to grant creditable service to Paul Lemelin',
-     'An Act providing living organ donor protections',
-     )
+    selectbox_options
 )
 
-bill_content, bill_title = find_bills(option)
+# Extracting the bill number from the selected option
+selected_num = option.split(":")[0][1:]
+selected_title = option.split(":")[1]
+bill_content, bill_title, bill_number = find_bills(selected_num, selected_title)
+
 
 def generate_categories(text):
     """
@@ -125,7 +144,7 @@ with answer_container:
                 tag_response, tag_tokens, tag_prompt, tag_complete, tag_cost = generate_categories(bill_content)
            
                 with col1:
-                    st.subheader("Original Bill")
+                    st.subheader(f"Original Bill: #{bill_number}")
                     st.write(bill_title)
                     st.write(bill_content)
                 with col2:
@@ -164,8 +183,3 @@ with answer_container:
 
             except Exception as e:
                 st.write("No repsonse, is your API Key valid?")
-        
-        
-                
-
-    
