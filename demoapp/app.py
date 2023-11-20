@@ -131,7 +131,7 @@ with answer_container:
                 with col2:
                     st.subheader("Generated Text")
                     st.write(response)
-                    st.write("###") # add a line break
+        
                     st.write(tag_response)
                     
                     update_csv(bill_title, response, csv_file_path)
