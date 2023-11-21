@@ -8,6 +8,7 @@ from langchain.callbacks import get_openai_callback
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from rouge_score import rouge_scorer
+from sentence_transformers import CrossEncoder
 from sidebar import *
 from tagging import *
 
@@ -22,6 +23,8 @@ The summaries must be easy to understand and accurate based on the provided bill
 Use the title {title} to guide your summary. Summarize the bill that reads as follows:\n{context}\n\nSummary: An Act [bill title]. This bill [key information].
 """
 
+# model to test hallucination
+model = CrossEncoder('vectara/hallucination_evaluation_model')
 
 # load the dataset
 df = pd.read_csv("demoapp/all_bills.csv")
@@ -106,7 +109,7 @@ def generate_response(text, title):
     with get_openai_callback() as cb:
         llm = LLMChain(
             llm = ChatOpenAI(openai_api_key=API_KEY,
-                     temperature=0.01, model="gpt-3.5-turbo"), prompt=prompt)
+                     temperature=0.01, model="gpt-3.5-turbo", max_tokens=4000), prompt=prompt)
         
         response = llm.predict(context=text, title=title)
         return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
@@ -174,7 +177,12 @@ with answer_container:
                     tfidf_matrix = vectorizer.fit_transform([bill_content, response])
                     cosine_sim = cosine_similarity(tfidf_matrix[0], tfidf_matrix[1])
                     st.write(f"Cosine Similarity Score: {cosine_sim[0][0]:.2f}")
-                    st.write("###") # add a line break
+
+                    # test hallucination
+                    scores = model.predict([
+                        [bill_content, response]
+                    ])
+                    st.write(f"factual consistency score: {round(scores[0], 2)}")
                     
                     st.write(f"Total Tokens: {tag_tokens+response_tokens}")
                     st.write(f"Prompt Tokens: {tag_prompt+prompt_tokens}")
