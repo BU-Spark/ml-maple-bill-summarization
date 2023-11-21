@@ -10,6 +10,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from rouge_score import rouge_scorer
 from sidebar import *
 from tagging import *
+from openai import OpenAI
+
 
 
 st.set_page_config(page_title="Summarize and Tagging MA Bills", layout='wide')
@@ -82,6 +84,7 @@ def generate_categories(text):
     """
     try:
         API_KEY = st.session_state["OPENAI_API_KEY"]
+        
     except Exception as e:
          return st.error("Invalid [OpenAI API key](https://beta.openai.com/account/api-keys) or not found")
     
@@ -97,6 +100,7 @@ def generate_categories(text):
 def generate_response(text, title):
     try:
         API_KEY = st.session_state['OPENAI_API_KEY']
+        
     except Exception as e:
         return st.error("Invalid [OpenAI API key](https://beta.openai.com/account/api-keys) or not found")
     
@@ -104,12 +108,23 @@ def generate_response(text, title):
 
     # Instantiate LLM model
     with get_openai_callback() as cb:
-        llm = LLMChain(
-            llm = ChatOpenAI(openai_api_key=API_KEY,
-                     temperature=0.01, model="gpt-3.5-turbo"), prompt=prompt)
+        # llm = LLMChain(
+        #     llm = ChatOpenAI(openai_api_key=API_KEY,
+        #             #  temperature=0.01, model="gpt-3.5-turbo"), prompt=prompt)
+        #             temperature=0.01, model="gpt-4"), prompt=prompt)
         
-        response = llm.predict(context=text, title=title)
-        return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
+        # response = llm.predict(context=text, title=title)
+        # return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
+        client = OpenAI(api_key=st.session_state["OPENAI_API_KEY"])
+
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages = [
+                {"role": "system", "content": "you are a helpful assitant"},
+                {"role": "user", "content": f"You are a summarizer model that summarizes legal bills and legislation. Please include the bill's main purpose, relevant key points and any amendements. The summaries must be easy to understand and accurate based on the provided bill. I want you to summarize the legal bill and legislation. Use the title {title} to guide your summary. Summarize the bill that reads as follows:\n{text}\n\nSummary: An Act [bill title]. This bill [key information]."},
+            ]
+        )
+        return response.choices[0].message.content, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
 
 # Function to update or append to CSV
 def update_csv(title, summarized_bill, csv_file_path):
@@ -182,4 +197,4 @@ with answer_container:
                     st.write(f"Total Cost (USD): ${response_cost+tag_cost}")
 
             except Exception as e:
-                st.write("No repsonse, is your API Key valid?")
+                st.write(f"No repsonse, is your API Key valid? Error: {e}")
