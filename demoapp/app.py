@@ -17,7 +17,7 @@ st.title('Summarize Bills')
 
 sbar()
 
-template = """"You are a summarizer model that summarizes legal bills and legislation and talks about the bills purpose and any amendments. 
+template = """"You are a summarizer model that summarizes legal bills and legislation. Please include the bill's main purpose, relevant key points and any amendements. 
 The summaries must be easy to understand and accurate based on the provided bill. I want you to summarize the legal bill and legislation. 
 Use the title {title} to guide your summary. Summarize the bill that reads as follows:\n{context}\n\nSummary: An Act [bill title]. This bill [key information].
 """
