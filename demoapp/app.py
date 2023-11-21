@@ -30,36 +30,8 @@ prompt = PromptTemplate(
 # load the dataset
 df = pd.read_csv("demoapp/all_bills.csv")
 
-# def find_bills(bill_number, bill_title):
-#     """input:
-#     args: bill_number: (str), Use the number of the bill to find its title and content
-#     """
-#     bill = df[df['BillNumber'] == bill_number]['DocumentText']
 
-#     try:
-#          # Locate the index of the bill
-#         idx = bill.index.tolist()[0]
-#         # Locate the content and bill title of bill based on idx
-#         content = df['DocumentText'].iloc[idx]
-#         #bill_title = df['Title'].iloc[idx]
-#         bill_number = df['BillNumber'].iloc[idx]
-
-#     except Exception as e:
-#         content = "blank"
-#         #st.error("Cannot find such bill from the source")
-    
-#     return content, bill_title, bill_number
-
-# option = st.selectbox(
-#     'Select a Bill',
-#     ('An Act establishing a sick leave bank for Christopher Trigilio, an employee of the trial court',
-#      'An Act authorizing the State Board of Retirement to grant creditable service to Paul Lemelin',
-#      'An Act providing living organ donor protections',
-#      )
-# )
-# bill_content, bill_title = find_bills(option)
-
-# Creating two search bars
+# Creating search bar 
 search_number = st.text_input("Search by Bill Number")
 search_title = st.text_input("Search by Bill Title")
 
