@@ -8,6 +8,7 @@ from langchain.callbacks import get_openai_callback
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from rouge_score import rouge_scorer
+from langchain.prompts.chat import ChatPromptValue
 from sentence_transformers import CrossEncoder
 from sidebar import *
 from tagging import *
@@ -74,6 +75,7 @@ option = st.selectbox(
 # Extracting the bill number from the selected option
 selected_num = option.split(":")[0][1:]
 selected_title = option.split(":")[1]
+
 bill_content, bill_title, bill_number = find_bills(selected_num, selected_title)
 
 
@@ -92,7 +94,7 @@ def generate_categories(text):
 
     with get_openai_callback() as cb:
         llm = LLMChain(
-            llm = ChatOpenAI(openai_api_key=API_KEY, temperature=0.01, model='gpt-3.5-turbo'), prompt=tagprompt)
+            llm = ChatOpenAI(openai_api_key=API_KEY, temperature=0.01, model='gpt-3.5-turbo-1106'), prompt=tagprompt)
         
         response = llm.predict(context=text, category=category, tags=tagging) # grab from tagging.py
         return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
@@ -109,7 +111,7 @@ def generate_response(text, title):
     with get_openai_callback() as cb:
         llm = LLMChain(
             llm = ChatOpenAI(openai_api_key=API_KEY,
-                     temperature=0.01, model="gpt-3.5-turbo", max_tokens=4000), prompt=prompt)
+                     temperature=0.01, model="gpt-3.5-turbo-1106"), prompt=prompt)
         
         response = llm.predict(context=text, title=title)
         return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
@@ -132,6 +134,7 @@ def update_csv(title, summarized_bill, csv_file_path):
     df.to_csv(csv_file_path, index=False)
     return df
 
+
 csv_file_path = "demoapp/generated_bills.csv"
 
 answer_container = st.container()
@@ -142,27 +145,20 @@ with answer_container:
 
     if submit_button:
         with st.spinner("Working hard..."):
-            try:
+            
                 response, response_tokens, prompt_tokens, completion_tokens, response_cost = generate_response(bill_content, bill_title)
                 tag_response, tag_tokens, tag_prompt, tag_complete, tag_cost = generate_categories(bill_content)
-           
                 with col1:
                     st.subheader(f"Original Bill: #{bill_number}")
                     st.write(bill_title)
                     st.write(bill_content)
+
                 with col2:
                     st.subheader("Generated Text")
                     st.write(response)
                     st.write("###") # add a line break
                     st.write(tag_response)
                     
-                    update_csv(bill_title, response, csv_file_path)
-                    st.download_button(
-                            label="Download Text",
-                            data=pd.read_csv("demoapp/generated_bills.csv").to_csv(index=False).encode('utf-8'),
-                            file_name='Bills_Summarization.csv',
-                            mime='text/csv',)
-
                 with col3:
                     st.subheader("Evaluation Metrics")
                     # rouge score addition
@@ -182,12 +178,19 @@ with answer_container:
                     scores = model.predict([
                         [bill_content, response]
                     ])
-                    st.write(f"factual consistency score: {round(scores[0], 2)}")
-                    
-                    st.write(f"Total Tokens: {tag_tokens+response_tokens}")
-                    st.write(f"Prompt Tokens: {tag_prompt+prompt_tokens}")
-                    st.write(f"Completion Tokens: {tag_complete+completion_tokens}")
-                    st.write(f"Total Cost (USD): ${response_cost+tag_cost}")
+                    score_result = float(scores[0])
+                    st.write(f"Factual Consistency Score: {round(score_result, 2)}")
+                    st.write("###")
+                    st.subheader("Token Usage")
+                    st.write(f"Response Tokens: {response_tokens}")
+                    st.write(f"Tag Tokens: {tag_tokens}")
 
-            except Exception as e:
-                st.write("No repsonse, is your API Key valid?")
+                    st.write(f"Prompt Response: {prompt_tokens}")
+                    st.write(f"Prompt Tag: {tag_prompt}")
+
+                    st.write(f"Response Complete:{completion_tokens}")
+                    st.write(f"Tag Complete: {tag_complete}")
+                    
+                    st.write(f"Response Cost: $ {response_cost}")
+                    st.write(f"Tag cost: $ {tag_cost}")
+                    
