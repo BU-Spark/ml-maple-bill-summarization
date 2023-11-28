@@ -1,7 +1,7 @@
 List of Category available: [Environmental, Education, Health Care, Criminal Justice, Taxation, Transportation, Housing, Civil Rights, Labor and Employment, Budget and Appropriations, Public Safety, Technology and Innovation, Immigration, Economic Development,
 Social Services]
 
-Categorry: Environmental
+Category: Environmental
 Tags in Environmental
   
   Climate Change Mitigation
@@ -15,9 +15,8 @@ Tags in Environmental
   Environmental Impact Assessments
   Wildlife Habitat Protection
 
-Education:
-
-  Tags in Education
+Category: Education
+Tags in Education
 
     Curriculum Development
     Digital Learning Resources
@@ -30,9 +29,8 @@ Education:
     School Infrastructure Upgrades
     Student Mental Health Support
 
-Health Care:
-
-  Tags in Health Care
+Category: Health Care
+Tags in Health Care
   
     Universal Health Coverage
     Healthcare Access for All
@@ -45,10 +43,9 @@ Health Care:
     Public Health Emergency Preparedness
     Healthcare Workforce Training
 
-Criminal Justice:
+Categpry: Criminal Justice
+Tags in Criminal Justice
 
-  Tags in Criminal Justice
-  
     Police Reforms
     Prisoner Rehabilitation
     Community Policing Initiatives
@@ -60,9 +57,8 @@ Criminal Justice:
     Hate Crime Prevention Measures
     Court System Modernization
 
-Taxation:
-
-  Tags in Taxation
+Category: Taxation
+Tags in Taxation
   
     Progressive Tax Reform
     Corporate Taxation Policies
@@ -75,9 +71,8 @@ Taxation:
     Small Business Tax Breaks
     Tax Fraud Prevention Measures
 
-Transportation:
-
-  Tags in Transportation
+Category: Transportation
+Tags in Transportation
   
     Public Transit Expansion
     Road Infrastructure Maintenance
@@ -90,9 +85,8 @@ Transportation:
     Intermodal Transportation Integration
     Autonomous Vehicle Regulations
 
-Housing:
-
-  Tags in Housing
+Category: Housing
+Tags in Housing
   
     Affordable Housing Development
     Homelessness Prevention Programs
@@ -105,9 +99,8 @@ Housing:
     Eviction Moratoriums
     Homeownership Support Programs
 
-Civil Rights:
-
-  Tags in Civil Rights
+Category: Civil Rights
+Tags in Civil Rights
   
     Anti-Discrimination Laws
     Gender Equality Protections
@@ -120,9 +113,8 @@ Civil Rights:
     Equal Pay Legislation
     Minority Rights Safeguards
 
-Labor and Employment:
-
-  Tags in Labor and Employment
+Category: Labor and Employment
+Tags in Labor and Employment
   
     Minimum Wage Increase
     Occupational Safety Regulations
@@ -135,9 +127,8 @@ Labor and Employment:
     Unemployment Benefits Enhancement
     Remote Work Policies
 
-Budget and Appropriations:
-
-  Tags in Budget and Appropriations
+Category: Budget and Appropriations
+Tags in Budget and Appropriations
   
     Government Spending Oversight
     Emergency Fund Allocation
@@ -150,9 +141,8 @@ Budget and Appropriations:
     Financial Aid for Disadvantaged Communities
     Tax Revenue Allocation
 
-Public Safety:
-
-  Tags in Public Safety
+Category: Public Safety
+Tags in Public Safety
   
     Emergency Response Planning
     Disaster Preparedness Training
@@ -165,9 +155,8 @@ Public Safety:
     Hate Crime Reporting Systems
     Crime Prevention Initiatives
 
-Technology and Innovation:
-
-  Tags in Technology and Innovation
+Category: Technology and Innovation
+Tags in Technology and Innovation
   
     Digital Privacy Laws
     Data Security Measures
@@ -180,9 +169,8 @@ Technology and Innovation:
     Blockchain Integration Strategies
     Open Data Initiatives
 
-Immigration:
-
-  Tags in Immigration
+Category: Immigration
+Tags in Immigration
   
     Immigration Policy Reform
     Refugee Resettlement Programs
@@ -195,9 +183,8 @@ Immigration:
     Border Security Measures
     Anti-Trafficking Efforts
 
-Economic Development:
-
-  Tags in Economic Development
+Category: Economic Development
+Tags in Economic Development
   
     Small Business Support Programs
     Export Promotion Policies
@@ -210,9 +197,8 @@ Economic Development:
     Economic Diversification Strategies
     Infrastructure Investment Plans
 
-Social Services:
-
-  Tags in Social Services
+Category: Social Services
+Tags in Social Services
   
     Child Welfare Services
     Domestic Violence Support
