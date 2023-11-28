@@ -1,5 +1,4 @@
-List of Category available: [Environmental, Education, Health Care, Criminal Justice, Taxation, Transportation, Housing, Civil Rights, Labor and Employment, Budget and Appropriations, Public Safety, Technology and Innovation, Immigration, Economic Development,
-Social Services]
+List of Category available: [Environmental, Education, Health Care, Criminal Justice, Taxation, Transportation, Housing, Civil Rights, Labor and Employment, Budget and Appropriations, Public Safety, Technology and Innovation, Immigration, Economic Development, Social Services]
 
 Category: Environmental
 
