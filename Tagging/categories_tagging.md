@@ -1,20 +1,19 @@
 List of Category available: [Environmental, Education, Health Care, Criminal Justice, Taxation, Transportation, Housing, Civil Rights, Labor and Employment, Budget and Appropriations, Public Safety, Technology and Innovation, Immigration, Economic Development,
 Social Services]
 
-Environmental:
-
-  Tags in Environmental
+Categorry: Environmental
+Tags in Environmental
   
-    Climate Change Mitigation
-    Renewable Energy Initiatives
-    Biodiversity Conservation
-    Water Pollution Control
-    Sustainable Agriculture Practices
-    Air Quality Improvement
-    Waste Reduction Programs
-    Coastal Erosion Management
-    Environmental Impact Assessments
-    Wildlife Habitat Protection
+  Climate Change Mitigation
+  Renewable Energy Initiatives
+  Biodiversity Conservation
+  Water Pollution Control
+  Sustainable Agriculture Practices
+  Air Quality Improvement
+  Waste Reduction Programs
+  Coastal Erosion Management
+  Environmental Impact Assessments
+  Wildlife Habitat Protection
 
 Education:
 
