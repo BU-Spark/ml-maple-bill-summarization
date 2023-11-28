@@ -2,6 +2,7 @@ List of Category available: [Environmental, Education, Health Care, Criminal Jus
 Social Services]
 
 Category: Environmental
+
 Tags in Environmental
   
   Climate Change Mitigation
@@ -16,6 +17,7 @@ Tags in Environmental
   Wildlife Habitat Protection
 
 Category: Education
+
 Tags in Education
 
     Curriculum Development
@@ -30,6 +32,7 @@ Tags in Education
     Student Mental Health Support
 
 Category: Health Care
+
 Tags in Health Care
   
     Universal Health Coverage
@@ -44,6 +47,7 @@ Tags in Health Care
     Healthcare Workforce Training
 
 Categpry: Criminal Justice
+
 Tags in Criminal Justice
 
     Police Reforms
@@ -58,6 +62,7 @@ Tags in Criminal Justice
     Court System Modernization
 
 Category: Taxation
+
 Tags in Taxation
   
     Progressive Tax Reform
@@ -72,6 +77,7 @@ Tags in Taxation
     Tax Fraud Prevention Measures
 
 Category: Transportation
+
 Tags in Transportation
   
     Public Transit Expansion
@@ -86,6 +92,7 @@ Tags in Transportation
     Autonomous Vehicle Regulations
 
 Category: Housing
+
 Tags in Housing
   
     Affordable Housing Development
@@ -100,6 +107,7 @@ Tags in Housing
     Homeownership Support Programs
 
 Category: Civil Rights
+
 Tags in Civil Rights
   
     Anti-Discrimination Laws
@@ -114,6 +122,7 @@ Tags in Civil Rights
     Minority Rights Safeguards
 
 Category: Labor and Employment
+
 Tags in Labor and Employment
   
     Minimum Wage Increase
@@ -128,6 +137,7 @@ Tags in Labor and Employment
     Remote Work Policies
 
 Category: Budget and Appropriations
+
 Tags in Budget and Appropriations
   
     Government Spending Oversight
@@ -142,6 +152,7 @@ Tags in Budget and Appropriations
     Tax Revenue Allocation
 
 Category: Public Safety
+
 Tags in Public Safety
   
     Emergency Response Planning
@@ -156,6 +167,7 @@ Tags in Public Safety
     Crime Prevention Initiatives
 
 Category: Technology and Innovation
+
 Tags in Technology and Innovation
   
     Digital Privacy Laws
@@ -170,6 +182,7 @@ Tags in Technology and Innovation
     Open Data Initiatives
 
 Category: Immigration
+
 Tags in Immigration
   
     Immigration Policy Reform
@@ -184,6 +197,7 @@ Tags in Immigration
     Anti-Trafficking Efforts
 
 Category: Economic Development
+
 Tags in Economic Development
   
     Small Business Support Programs
@@ -198,6 +212,7 @@ Tags in Economic Development
     Infrastructure Investment Plans
 
 Category: Social Services
+
 Tags in Social Services
   
     Child Welfare Services
