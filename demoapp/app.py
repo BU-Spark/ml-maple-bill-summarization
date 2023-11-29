@@ -92,7 +92,7 @@ def generate_categories(text):
 
     with get_openai_callback() as cb:
         llm = LLMChain(
-            llm = ChatOpenAI(openai_api_key=API_KEY, temperature=0.01, model='gpt-3.5-turbo'), prompt=tagprompt)
+            llm = ChatOpenAI(openai_api_key=API_KEY, temperature=0.01, model='gpt-3.5-turbo-1106'), prompt=tagprompt)
         
         response = llm.predict(context=text, category=category, tags=tagging) # grab from tagging.py
         return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
@@ -108,37 +108,38 @@ def generate_response(text, title):
 
     # Instantiate LLM model
     with get_openai_callback() as cb:
-        # llm = LLMChain(
-        #     llm = ChatOpenAI(openai_api_key=API_KEY,
-        #             #  temperature=0.01, model="gpt-3.5-turbo"), prompt=prompt)
-        #             temperature=0.01, model="gpt-4"), prompt=prompt)
+        llm = LLMChain(
+            llm = ChatOpenAI(openai_api_key=API_KEY,
+                    temperature=0.01, model="gpt-3.5-turbo-1106"), prompt=prompt)
         
-        # response = llm.predict(context=text, title=title)
-        # return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
-        client = OpenAI(api_key=st.session_state["OPENAI_API_KEY"])
+        response = llm.predict(context=text, title=title)
+        return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
+        # client = OpenAI(api_key=st.session_state["OPENAI_API_KEY"])
 
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages = [
-                {"role": "system", "content": "you are a helpful assitant"},
-                {"role": "user", "content": f"You are a summarizer model that summarizes legal bills and legislation. Please include the bill's main purpose, relevant key points and any amendements. The summaries must be easy to understand and accurate based on the provided bill. I want you to summarize the legal bill and legislation. Use the title {title} to guide your summary. Summarize the bill that reads as follows:\n{text}\n\nSummary: An Act [bill title]. This bill [key information]."},
-            ]
-        )
-        return response.choices[0].message.content, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
+        # response = client.chat.completions.create(
+        #     model="gpt-3.5-turbo-1106",
+        #     messages = [
+        #         {"role": "system", "content": "you are a helpful assitant"},
+        #         {"role": "user", "content": f"You are a summarizer model that summarizes legal bills and legislation. Please include the bill's main purpose, relevant key points and any amendements. The summaries must be easy to understand and accurate based on the provided bill. I want you to summarize the legal bill and legislation. Use the title {title} to guide your summary. Summarize the bill that reads as follows:\n{text}\n\nSummary: An Act [bill title]. This bill [key information]."},
+        #     ]
+        # )
+        # return response.choices[0].message.content, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
 
 # Function to update or append to CSV
-def update_csv(title, summarized_bill, csv_file_path):
+def update_csv(bill_num, title, summarized_bill, tagging, csv_file_path):
     try:
         df = pd.read_csv(csv_file_path)
     except FileNotFoundError:
         # If the file does not exist, create a new DataFrame
-        df = pd.DataFrame(columns=["Original Bills", "Summarized Bills"])
+        df = pd.DataFrame(columns=["Bill Number", "Bill Title", "Summarized Bill", "Category and Tags"])
     
-    mask = df["Original Bills"] == title
+    mask = df["Bill Number"] == bill_num
     if mask.any():
-        df.loc[mask, "Summarized Bills"] = summarized_bill
+        df.loc[mask, "Bill Title"] = title
+        df.loc[mask, "Summarized Bill"] = summarized_bill
+        df.loc[mask, "Category and Tags"] = tagging
     else:
-        new_bill = pd.DataFrame([[title, summarized_bill]], columns=["Original Bills", "Summarized Bills"])
+        new_bill = pd.DataFrame([[bill_num, title, summarized_bill, tagging]], columns=["Bill Number", "Bill Title", "Summarized Bill", "Category and Tags"])
         df = pd.concat([df, new_bill], ignore_index=True)
     
     df.to_csv(csv_file_path, index=False)
@@ -167,8 +168,8 @@ with answer_container:
                     st.write(response)
                     st.write("###") # add a line break
                     st.write(tag_response)
-                    
-                    update_csv(bill_title, response, csv_file_path)
+
+                    update_csv(bill_number, bill_title, response, tag_response, csv_file_path)
                     st.download_button(
                             label="Download Text",
                             data=pd.read_csv("demoapp/generated_bills.csv").to_csv(index=False).encode('utf-8'),
