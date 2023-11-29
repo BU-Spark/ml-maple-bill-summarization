@@ -1,15 +1,20 @@
 import streamlit as st
 import pandas as pd
+import os
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain, create_tagging_chain, create_tagging_chain_pydantic
-from langchain.llms import OpenAI
+from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
+from langchain.schema.runnable import RunnablePassthrough
+from langchain.schema.output_parser import StrOutputParser
 from langchain.callbacks import get_openai_callback
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from rouge_score import rouge_scorer
-from langchain.prompts.chat import ChatPromptValue
 from sentence_transformers import CrossEncoder
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.document_loaders import TextLoader
 from sidebar import *
 from tagging import *
 
@@ -19,13 +24,14 @@ st.title('Summarize Bills')
 
 sbar()
 
+
 template = """"You are a summarizer model that summarizes legal bills and legislation. Please include the bill's main purpose, relevant key points and any amendements. 
 The summaries must be easy to understand and accurate based on the provided bill. I want you to summarize the legal bill and legislation. 
 Use the title {title} to guide your summary. Summarize the bill that reads as follows:\n{context}\n\nSummary: An Act [bill title]. This bill [key information].
 """
 
 # model to test hallucination
-model = CrossEncoder('vectara/hallucination_evaluation_model')
+# model = CrossEncoder('vectara/hallucination_evaluation_model')
 
 # load the dataset
 df = pd.read_csv("demoapp/all_bills.csv")
@@ -90,16 +96,66 @@ def generate_categories(text):
     except Exception as e:
          return st.error("Invalid [OpenAI API key](https://beta.openai.com/account/api-keys) or not found")
     
-    tagprompt = PromptTemplate(template=tagging_prompt, input_variables=["context", "category", "tags"])
+    # LLM
+    category_prompt = """According to this list of category {category}.
 
-    with get_openai_callback() as cb:
-        llm = LLMChain(
-            llm = ChatOpenAI(openai_api_key=API_KEY, temperature=0.01, model='gpt-3.5-turbo-1106'), prompt=tagprompt)
+        classify this bill {context} into a closest relevant category.
+
+        Do not output a category outside from the list
+    """
+
+    prompt = PromptTemplate(template=category_prompt, input_variables=["context", "category"])
+
+    
+    llm = LLMChain(
+            llm = ChatOpenAI(openai_api_key=API_KEY, temperature=0, model='gpt-4'), prompt=prompt)
         
-        response = llm.predict(context=text, category=category, tags=tagging) # grab from tagging.py
-        return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
+    response = llm.predict(context = text, category = category_for_bill) # grab from tagging.py
+    return response
+
+def generate_tags(category, context):
+    """Function to generate tags using Retrieval Augmented Generation
+    """
+
+    try:
+        API_KEY = st.session_state["OPENAI_API_KEY"]
+        os.environ['OPENAI_API_KEY'] = API_KEY
+    except Exception as e:
+         return st.error("Invalid [OpenAI API key](https://beta.openai.com/account/api-keys) or not found")
+    
+    loader = TextLoader("demoapp/category.txt").load()
+    text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    documents = text_splitter.split_documents(loader)
+    vectorstore = Chroma.from_documents(documents, OpenAIEmbeddings())
+    retriever = vectorstore.as_retriever()
+
+    # LLM
+    template = """You are a trustworthy assistant for question-answering tasks.
+    Use the following pieces of retrieved context to answer the question.
+    Question: {question}
+    Context: {context}
+    Answer:
+    
+    """
+
+    prompt = PromptTemplate.from_template(template)
+    llm = ChatOpenAI(openai_api_key=API_KEY, temperature=0, model='gpt-4')
+
+    rag_chain = (
+        {"context": retriever, "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
+    )
+    query = f"""Output top 3 tags from the category {category} that is relevant to the context {context}
+    """
+        
+    response = rag_chain.invoke(query)
+    return response
+
 
 def generate_response(text, title):
+    """Function to generate response"""
     try:
         API_KEY = st.session_state['OPENAI_API_KEY']
     except Exception as e:
@@ -118,6 +174,7 @@ def generate_response(text, title):
 
 # Function to update or append to CSV
 def update_csv(title, summarized_bill, csv_file_path):
+    """Function to update the csv for it to be downloadable"""
     try:
         df = pd.read_csv(csv_file_path)
     except FileNotFoundError:
@@ -147,7 +204,9 @@ with answer_container:
         with st.spinner("Working hard..."):
             
                 response, response_tokens, prompt_tokens, completion_tokens, response_cost = generate_response(bill_content, bill_title)
-                tag_response, tag_tokens, tag_prompt, tag_complete, tag_cost = generate_categories(bill_content)
+                category_response = generate_categories(bill_content)
+                tag_response = generate_tags(category_response, bill_content)
+                
                 with col1:
                     st.subheader(f"Original Bill: #{bill_number}")
                     st.write(bill_title)
@@ -156,7 +215,8 @@ with answer_container:
                 with col2:
                     st.subheader("Generated Text")
                     st.write(response)
-                    st.write("###") # add a line break
+                    st.write("###")
+                    st.write(category_response)
                     st.write(tag_response)
                     
                 with col3:
@@ -175,22 +235,22 @@ with answer_container:
                     st.write(f"Cosine Similarity Score: {cosine_sim[0][0]:.2f}")
 
                     # test hallucination
-                    scores = model.predict([
-                        [bill_content, response]
-                    ])
-                    score_result = float(scores[0])
-                    st.write(f"Factual Consistency Score: {round(score_result, 2)}")
+                    # scores = model.predict([
+                        # [bill_content, response]
+                    # ])
+                    # score_result = float(scores[0])
+                    # st.write(f"Factual Consistency Score: {round(score_result, 2)}")
                     st.write("###")
                     st.subheader("Token Usage")
                     st.write(f"Response Tokens: {response_tokens}")
-                    st.write(f"Tag Tokens: {tag_tokens}")
+                    
 
                     st.write(f"Prompt Response: {prompt_tokens}")
-                    st.write(f"Prompt Tag: {tag_prompt}")
+                    
 
                     st.write(f"Response Complete:{completion_tokens}")
-                    st.write(f"Tag Complete: {tag_complete}")
+                    
                     
                     st.write(f"Response Cost: $ {response_cost}")
-                    st.write(f"Tag cost: $ {tag_cost}")
+                    
                     
