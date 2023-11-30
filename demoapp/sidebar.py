@@ -17,7 +17,8 @@ def sbar():
                                             type="password")
         
         st.markdown("---")
-        st.markdown("# About")
+        st.markdown("# About\n")
+        st.write("input 0.0010 per 1000 tokens, output 0.0020 per 1000 tokens")
         st.markdown("---")
         st.markdown("Privacy")
         st.markdown(
