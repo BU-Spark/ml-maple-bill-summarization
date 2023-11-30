@@ -31,7 +31,7 @@ Use the title {title} to guide your summary. Summarize the bill that reads as fo
 """
 
 # model to test hallucination
-# model = CrossEncoder('vectara/hallucination_evaluation_model')
+model = CrossEncoder('vectara/hallucination_evaluation_model')
 
 # load the dataset
 df = pd.read_csv("demoapp/all_bills.csv")
@@ -235,11 +235,11 @@ with answer_container:
                     st.write(f"Cosine Similarity Score: {cosine_sim[0][0]:.2f}")
 
                     # test hallucination
-                    # scores = model.predict([
-                        # [bill_content, response]
-                    # ])
-                    # score_result = float(scores[0])
-                    # st.write(f"Factual Consistency Score: {round(score_result, 2)}")
+                    scores = model.predict([
+                        [bill_content, response]
+                    ])
+                    score_result = float(scores[0])
+                    st.write(f"Factual Consistency Score: {round(score_result, 2)}")
                     st.write("###")
                     st.subheader("Token Usage")
                     st.write(f"Response Tokens: {response_tokens}")
