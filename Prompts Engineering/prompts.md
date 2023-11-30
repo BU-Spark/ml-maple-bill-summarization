@@ -24,13 +24,6 @@ s #### \
 s #### """
 
 ## Prompt 4
-Prompt 4 = 
-"""You are a summarizer model that summarizes legal bills and legislation. Please include the bill's main purpose, relevant key points and any amendements. 
-The summaries must be easy to understand and accurate based on the provided bill. I want you to summarize the legal bill and legislation. 
-Use the title {title} to guide your summary. Summarize the bill that reads as follows:\n{context}\n\nSummary: An Act [bill title]. This bill [key information].
-"""
-
-## Prompt 5
 template = """"Your task is to generate a concise summary of a bill
 from massachusetts legislature. Make sure to capture the main idea of the bill.
 
@@ -49,5 +42,3 @@ next, after you select a category, identify tags that are relevant to your summa
 Do not make up any false information.
 
 """
-
-A complete list of prompts will be available in the appendix section after the evaluation phase.
