@@ -124,6 +124,7 @@ def generate_categories(text):
     response = llm.predict(context = text, category = category_for_bill) # grab from tagging.py
     return response
 
+
 def generate_tags(category, context):
     """Function to generate tags using Retrieval Augmented Generation
     """
@@ -182,33 +183,35 @@ def generate_response(text, law_text):
         
         response = llm.predict(context=text, laws=law_text)
         return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
+    
 
 # Function to update or append to CSV
-def update_csv(title, summarized_bill, csv_file_path):
-    """Function to update the csv for it to be downloadable"""
+def update_csv(bill_num, title, summarized_bill, category, tag, csv_file_path):
     try:
         df = pd.read_csv(csv_file_path)
     except FileNotFoundError:
         # If the file does not exist, create a new DataFrame
-        df = pd.DataFrame(columns=["Original Bills", "Summarized Bills"])
+        df = pd.DataFrame(columns=["Bill Number", "Bill Title", "Summarized Bill", "Category", "Tags"])
     
-    mask = df["Original Bills"] == title
+    mask = df["Bill Number"] == bill_num
     if mask.any():
-        df.loc[mask, "Summarized Bills"] = summarized_bill
+        df.loc[mask, "Bill Title"] = title
+        df.loc[mask, "Summarized Bill"] = summarized_bill
+        df.loc[mask, "Category"] = category
+        df.loc[mask, "Tags"] = tag
     else:
-        new_bill = pd.DataFrame([[title, summarized_bill]], columns=["Original Bills", "Summarized Bills"])
+        new_bill = pd.DataFrame([[bill_num, title, summarized_bill, category, tag]], columns=["Bill Number", "Bill Title", "Summarized Bill", "Category", "Tags"])
         df = pd.concat([df, new_bill], ignore_index=True)
     
     df.to_csv(csv_file_path, index=False)
     return df
 
-
 csv_file_path = "demoapp/generated_bills.csv"
+
 
 answer_container = st.container()
 with answer_container:
     submit_button = st.button(label='Summarize')
-    # col1, col2, col3 = st.columns(3, gap='medium')
     col1, col2, col3 = st.columns([1.5, 1.5, 1])
 
     if submit_button:
@@ -227,8 +230,15 @@ with answer_container:
                     st.subheader("Generated Text")
                     st.write(response)
                     st.write("###")
-                    st.write(category_response)
+                    st.write("Category:", category_response)
                     st.write(tag_response)
+                    
+                    update_csv(bill_number, bill_title, response, category_response, tag_response, csv_file_path)
+                    st.download_button(
+                            label="Download Text",
+                            data=pd.read_csv("demoapp/generated_bills.csv").to_csv(index=False).encode('utf-8'),
+                            file_name='Bills_Summarization.csv',
+                            mime='text/csv',)
                     
                 with col3:
                     st.subheader("Evaluation Metrics")
@@ -251,17 +261,12 @@ with answer_container:
                     ])
                     score_result = float(scores[0])
                     st.write(f"Factual Consistency Score: {round(score_result, 2)}")
+                    
                     st.write("###")
                     st.subheader("Token Usage")
                     st.write(f"Response Tokens: {response_tokens}")
-                    
-
                     st.write(f"Prompt Response: {prompt_tokens}")
-                    
-
                     st.write(f"Response Complete:{completion_tokens}")
-                    
-                    
                     st.write(f"Response Cost: $ {response_cost}")
                     
                     
