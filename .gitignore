@@ -170,4 +170,4 @@ $RECYCLE.BIN/
 .nfs*
 
 __pycache__/
-
+env/
