@@ -36,53 +36,37 @@ Use the title {title} to guide your summary. Summarize the bill that reads as fo
 # load the dataset
 df = pd.read_csv("demoapp/all_bills.csv")
 
-def find_bills(bill_number, bill_title):
-    """input:
-    args: bill_number: (str), Use the number of the bill to find its title and content
-    """
-    bill = df[df['BillNumber'] == bill_number]['DocumentText']
+# Creating search bar 
+search_number = st.text_input("Search by Bill Number")
+search_title = st.text_input("Search by Bill Title")
 
-    try:
-         # Locate the index of the bill
-        idx = bill.index.tolist()[0]
-        # Locate the content and bill title of bill based on idx
-        content = df['DocumentText'].iloc[idx]
-        #bill_title = df['Title'].iloc[idx]
-        bill_number = df['BillNumber'].iloc[idx]
+# Initial empty DataFrame
+filtered_df = df
 
-    except Exception as e:
-        content = "blank"
-        st.error("Cannot find such bill from the source")
+# Filtering based on inputs
+if search_number:
+    filtered_df = df[df['BillNumber'].str.contains(search_number, case=False, na=False)]
+if search_title:
+    filtered_df = df[df['Title'].str.contains(search_title, case=False, na=False)]
+
+if not filtered_df.empty:
+    # Creating selectbox options safely
+    selectbox_options = [f"Bill #{num}: {filtered_df[filtered_df['BillNumber'] == num]['Title'].iloc[0]}" 
+                         for num in filtered_df['BillNumber'] if not filtered_df[filtered_df['BillNumber'] == num].empty]
+
+    option = st.selectbox(
+        'Select a Bill',
+        selectbox_options
+    )
+
+    # Extracting the bill number, title, and content from the selected option
+    bill_number = option.split(":")[0][6:]
+    bill_title = option.split(":")[1]
+    bill_content = filtered_df[filtered_df['BillNumber'] == bill_number]['DocumentText'].iloc[0]
     
-    return content, bill_title, bill_number
-
-bills_to_select = {
-    '#H3121': 'An Act relative to the open meeting law',
-    '#S2064': 'An Act extending the public records law to the Governor and the Legislature',
-    '#H711': 'An Act providing a local option for ranked choice voting in municipal elections',
-    '#S1979': 'An Act establishing a jail and prison construction moratorium',
-    '#H489': 'An Act providing affordable and accessible high-quality early education and care to promote child development and well-being and support the economy in the Commonwealth',
-    '#S2014': 'An Act relative to collective bargaining rights for legislative employees',
-    '#S301': 'An Act providing affordable and accessible high quality early education and care to promote child development and well-being and support the economy in the Commonwealth',
-    '#H3069': 'An Act relative to collective bargaining rights for legislative employees',
-    '#S433': 'An Act providing a local option for ranked choice voting in municipal elections',
-    '#H400': 'An Act relative to vehicle recalls',
-    '#H538': 'An Act to Improve access, opportunity, and capacity in Massachusetts vocational-technical education',
-    '#S257': 'An Act to end discriminatory outcomes in vocational school admissions'
-}
-
-# Displaying the selectbox
-selectbox_options = [f"{number}: {title}" for number, title in bills_to_select.items()]
-option = st.selectbox(
-    'Select a Bill',
-    selectbox_options
-)
-
-# Extracting the bill number from the selected option
-selected_num = option.split(":")[0][1:]
-selected_title = option.split(":")[1]
-
-bill_content, bill_title, bill_number = find_bills(selected_num, selected_title)
+else:
+    if search_number or search_title:
+        st.write("No bills found matching the search criteria.")
 
 
 def generate_categories(text):
@@ -173,19 +157,21 @@ def generate_response(text, title):
         return response, cb.total_tokens, cb.prompt_tokens, cb.completion_tokens, cb.total_cost
 
 # Function to update or append to CSV
-def update_csv(title, summarized_bill, csv_file_path):
-    """Function to update the csv for it to be downloadable"""
+def update_csv(bill_num, title, summarized_bill, category, tag, csv_file_path):
     try:
         df = pd.read_csv(csv_file_path)
     except FileNotFoundError:
         # If the file does not exist, create a new DataFrame
-        df = pd.DataFrame(columns=["Original Bills", "Summarized Bills"])
+        df = pd.DataFrame(columns=["Bill Number", "Bill Title", "Summarized Bill", "Category", "Tags"])
     
-    mask = df["Original Bills"] == title
+    mask = df["Bill Number"] == bill_num
     if mask.any():
-        df.loc[mask, "Summarized Bills"] = summarized_bill
+        df.loc[mask, "Bill Title"] = title
+        df.loc[mask, "Summarized Bill"] = summarized_bill
+        df.loc[mask, "Category"] = category
+        df.loc[mask, "Tags"] = tag
     else:
-        new_bill = pd.DataFrame([[title, summarized_bill]], columns=["Original Bills", "Summarized Bills"])
+        new_bill = pd.DataFrame([[bill_num, title, summarized_bill, category, tag]], columns=["Bill Number", "Bill Title", "Summarized Bill", "Category", "Tags"])
         df = pd.concat([df, new_bill], ignore_index=True)
     
     df.to_csv(csv_file_path, index=False)
@@ -216,8 +202,15 @@ with answer_container:
                     st.subheader("Generated Text")
                     st.write(response)
                     st.write("###")
-                    st.write(category_response)
+                    st.write("Category:", category_response)
                     st.write(tag_response)
+                    
+                    update_csv(bill_number, bill_title, response, category_response, tag_response, csv_file_path)
+                    st.download_button(
+                            label="Download Text",
+                            data=pd.read_csv("demoapp/generated_bills.csv").to_csv(index=False).encode('utf-8'),
+                            file_name='Bills_Summarization.csv',
+                            mime='text/csv',)
                     
                 with col3:
                     st.subheader("Evaluation Metrics")
@@ -247,5 +240,3 @@ with answer_container:
                     st.write(f"Prompt Response: {prompt_tokens}")
                     st.write(f"Response Complete:{completion_tokens}")
                     st.write(f"Response Cost: $ {response_cost}")
-                    
-                    
