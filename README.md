@@ -27,3 +27,11 @@ Vy Nguyen - Email: nptv1207@bu.edu
 Andy Yang - Email: ayang903@bu.edu   
 Gauri Bhandarwar - Email: gaurib3@bu.edu    
 Weining Mai - Email: weimai@bu.edu 
+
+
+## Ethical Implication
+The dataset used for this project is fully open sourced and can be access through Mass General Laws API
+
+Our team and MAPLE agree about putting disclaimer that this text is AI-generated.
+
+Although we make use of open source transformers to evaluate hallucination with Vectara, it is important to have experts and human evaluation to further maintain a trustworthy LLM system.
