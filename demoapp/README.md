@@ -11,7 +11,8 @@ Using Anaconda or create an environment to run streamlit
 In the file "app.py" in "demoapp" folder:
 * ```pip install streamlit```
 * Install all imported libraries: ```pip install pandas langchain openai chromadb tiktoken``` or you can refer to the requirement.txt
-* ```streamlit run demoapp/app.py```
+* ```streamlit run demoapp/app2.py```  
+  (The "app2.py" is our work on the most popular 12 bills. It is our latest code with RAG, vectara.)
 
 # Additional Pointers (Source:Research Paper)
 In the demo app itself we have included evaluation metrics that help gauge the quality of the generated summaries in our use-case
