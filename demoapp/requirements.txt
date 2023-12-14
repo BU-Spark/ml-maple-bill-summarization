@@ -7,7 +7,4 @@ rouge-score==0.1.2
 chromadb==0.4.18
 tiktoken==0.5.1
 sentence-transformers==2.2.2
-<<<<<<< HEAD
 pysqlite3==0.5.2
-=======
->>>>>>> 0e7661ed2f7ba243523947a8ac68f85464108c56
