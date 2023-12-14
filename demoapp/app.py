@@ -1,6 +1,10 @@
 import streamlit as st
 import pandas as pd
 import os
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain, create_tagging_chain, create_tagging_chain_pydantic
 from langchain.vectorstores import Chroma
@@ -17,6 +21,7 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.document_loaders import TextLoader
 from sidebar import *
 from tagging import *
+
 
 
 st.set_page_config(page_title="Summarize and Tagging MA Bills", layout='wide')
