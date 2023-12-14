@@ -1,1 +1,1 @@
-Demo app: https://maple-billsummarization.streamlit.app/ 
+Demo app: https://maple-billsummarization.streamlit.app/
