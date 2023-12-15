@@ -4,14 +4,21 @@ In this project, we generate summaries and category tags for of Massachusetts bi
 This repository contains a pipeline from taking bills from Massachusetts legislature, generating summaries and category tags leveraging different the Massachusetts General Law sections, creating a dashboard to display and save the generated texts, to deploying and integrating into MAPLE platform.
 
 ## Roadmap of Repository Directories
-* ```Research.md```: presents our research on large language models and evaluation methods we planned to use for this project.  
-* [EDA](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/EDA): the notebook ```eda.ipynb``` includes our work from scraping data that takes bills from MAPLE Swagger API, creating a dataframe to clean and process data, making visualizations to analyze data and explore characteristics of the dataset.  
+* [Documentation](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Documentation):  
+  ```Research.md```: our research on large language models and evaluation methods we planned to use for this project.  
+  ```Documentation MAPLE.pdf```: includes detail operation of our model for future use and improvement.
+  
+* [EDA](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/EDA): the notebook ```eda.ipynb``` includes our work from scraping data that takes bills from MAPLE Swagger API, creating a dataframe to clean and process data, making visualizations to analyze data and explore characteristics of the dataset.
+  
 * [demoapp](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/demoapp):   
   ```app.py```: contains the codes of the LLM service we used and the wepapp we made using Streamlit. The webapp allows user to search for all bills.  
   ```app2.py```: we test on top 12 bills from MAPLE website. We extract information from [Massachusetts General Law](https://malegislature.gov/Laws/GeneralLaws) to add context for the summaries of these bills.  
   Other files: helper files to be imported in the above two Python app files.
-* [Prompts Engineering](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Prompts%20Engineering): ```prompts.md``` stores all prompts that we tested.  
-* [Tagging](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Tagging): contains the list of categories and tags.  
+  
+* [Prompts Engineering](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Prompts%20Engineering): ```prompts.md``` stores all prompts that we tested.
+  
+* [Tagging](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Tagging): contains the list of categories and tags.
+  
 * [Deployment](https://github.com/vynpt/ml-maple-bill-summarization/tree/main/Deployment): contains the link of our Streamlit deployed webapp.   
 
 ## Ethical Implications
