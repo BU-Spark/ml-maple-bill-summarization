@@ -9,10 +9,17 @@ This repository contains a pipeline from taking bills from Massachusetts legisla
 * [demoapp](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/demoapp):   
   ```app.py```: contains the codes of the LLM service we used and the wepapp we made using Streamlit. The webapp allows user to search for all bills.  
   ```app2.py```: we test on top 12 bills from MAPLE website. We extract information from [Massachusetts General Law](https://malegislature.gov/Laws/GeneralLaws) to add context for the summaries of these bills.  
-  Other files: helper files to imported in the above two app Python files.
+  Other files: helper files to be imported in the above two Python app files.
 * [Prompts Engineering](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Prompts%20Engineering): ```prompts.md``` stores all prompts that we tested.  
 * [Tagging](https://github.com/vynpt/ml-maple-bill-summarization/tree/dev/Tagging): contains the list of categories and tags.  
 * [Deployment](https://github.com/vynpt/ml-maple-bill-summarization/tree/main/Deployment): contains the link of our Streamlit deployed webapp.   
+
+## Ethical Implications
+The dataset used for this project is fully open sourced and can be access through Mass General Laws API.   
+
+Our team and MAPLE agree about putting disclaimer that this text is AI-generated.  
+
+Although we make use of open source transformers to evaluate hallucination with Vectara, it is important to have experts and human evaluation to further maintain a trustworthy LLM system.
 
 ## Resources and Citation
 * https://huggingface.co/docs/transformers/tasks/summarization 
@@ -21,13 +28,6 @@ This repository contains a pipeline from taking bills from Massachusetts legisla
 * https://www.nocode.ai/llms-undesirable-outputs/  
 * https://learn.deeplearning.ai/  
 * https://blog.langchain.dev/espilla-x-langchain-retrieval-augmented-generation-rag-in-llm-powered-question-answering-pipelines/  
-
-## Ethical Implications
-The dataset used for this project is fully open sourced and can be access through Mass General Laws API
-
-Our team and MAPLE agree about putting disclaimer that this text is AI-generated.
-
-Although we make use of open source transformers to evaluate hallucination with Vectara, it is important to have experts and human evaluation to further maintain a trustworthy LLM system.
 
 ## Team Members
 Vy Nguyen - Email: nptv1207@bu.edu   
