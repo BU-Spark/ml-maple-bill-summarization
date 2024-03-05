@@ -21,7 +21,7 @@ A prompt engineering problem to improve the summaries and category tags for pend
 
 Experiment with different prompts to be able to get different levels of summarization, e.g., get basic-level summarization and advanced-level summarization. 
 
-Improve the accuracy of the existing model (GPT-4 model?) that was used to tag the bills by trying out different prompts, and using more advanced-level LLMs. 
+Improve the accuracy of the existing model (GPT-4-preview-1106) that was used to tag the bills by trying out different prompts, and using more advanced-level LLMs (GPT-4-0125-preview). 
 
 Redline the bills by checking if the bill has been amended. If so, we need to find the part that is amended as described in the beginning of the bill. And eventually, we need to highlight or redline that was found by the model.
 
