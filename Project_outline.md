@@ -1,6 +1,6 @@
 # Maple-Bill Summarization and Tagging Project Document
 
-## Vy Nguyen, Gauri Bhandarwar, Andy Yang, and Weining Mai *2023-October-05*
+## Can Erozer, Tia Hannah, Maria Arevalo, Zhanbo Yang *2024-February-12*
 
 ## Overview
 
